@@ -1,0 +1,28 @@
+{
+    "name": "nsantorello.shadrr-brackets",
+
+    "title": "Shadrr",
+    "description": "Cross-platform shader authoring toolkit.",
+    "keywords": ["shader", "glsl", "opengl"],
+    "version": "0.0.1",
+
+    "license": "MIT",
+    "homepage": "https://github.com/nsantorello/shadrr-brackets",
+    "author": {
+        "name": "Noah Santorello",
+        "email": "nsantorello@gmail.com",
+        "url": "https://github.com/nsantorello"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/nsantorello/shadrr-brackets.git"
+    },
+    "bugs": {
+        "url": "https://github.com/nsantorello/shadrr-brackets/issues",
+        "email": "nsantorello@gmail.com"
+    },
+    "main": "main.js",
+    "dependencies": {
+        "mdns": "^2.2.8"
+    }
+}
