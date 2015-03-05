@@ -38,15 +38,14 @@ define(function (require, exports, module) {
     
     Devices._broadcastToDevice = function(client, file, code) {
         // TODO: eventually pull these requests into a separate file "requests.js"
-        try {
-            var xmlHttp = new XMLHttpRequest();
-            xmlHttp.open("POST", "http://" + client, true);
-            xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            xmlHttp.send("file=" + file + "&code=" + code);
-        } catch (ex) {
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.open("POST", "http://" + client, true);
+        xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xmlHttp.onerror = function() { 
             console.log("[Shadrr/devices.js] Removing stale client '" + client + "'");
             removeClient(client);
-        }
+        };
+        xmlHttp.send("filename=" + file + "&code=" + code);
     }
     
     Devices.broadcast = function(file, code) {
