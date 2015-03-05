@@ -2,22 +2,39 @@ define(function (require, exports, module) {
     "use strict";
     
     var DocumentManager = brackets.getModule("document/DocumentManager"),
+        MainViewManager = brackets.getModule("view/MainViewManager"), 
+        FileUtils = brackets.getModule("file/FileUtils"),
         _ = require("vendor/lodash"),
         Devices = require("devices");
 
-    function documentSaved(mgr, doc) {
-        // Fragment shader extensions that will trigger a broadcast to Shadrr clients
-        var shaderExts = [".frag", ".glsl", ".glslf"];
-        
-        // If we're saving a fragment shader, broadcast the change to connected devices.
-        if (_.any(shaderExts, function(x) { 
-                return _.endsWith(doc.file.name, x); 
-            })) { 
-            Devices.broadcast(doc.file.name, doc.getText());
-        }  
+    function pushShader(filename, code) {
+        Devices.broadcast(filename, code); 
     }
     
-    // See all DocumentManager events at 
-    // https://github.com/adobe/brackets/blob/master/src/document/DocumentManager.js#L55
+    function isShader(filename) {
+        // Fragment shader extensions
+        var shaderExts = [".frag", ".glsl", ".glslf"];
+        
+        // Check if any extensions match the filename
+        return _.any(shaderExts, function(ext) { 
+            return _.endsWith(filename, ext); 
+        });
+    }
+    
+    function documentSaved(mgr, doc) {
+        if (isShader(doc.file.name)) {
+            pushShader(doc.file.name, doc.getText());   
+        }
+    }
+    
+    function currentFileChange(mgr, doc) {
+        if (isShader(doc.name)) {
+            FileUtils.readAsText(doc).done(function(text) {
+                pushShader(doc.name, text);
+            });
+        }
+    }
+    
     DocumentManager.on("documentSaved", documentSaved);
+    MainViewManager.on("currentFileChange", currentFileChange);
 });
