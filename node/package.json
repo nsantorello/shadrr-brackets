@@ -1,0 +1,6 @@
+{
+    "name": "shadrr-mdns",
+    "dependencies": {
+        "multicast-dns": "^2.0.0"
+    }      
+}

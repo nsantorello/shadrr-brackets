@@ -21,8 +21,5 @@
         "url": "https://github.com/nsantorello/shadrr-brackets/issues",
         "email": "nsantorello@gmail.com"
     },
-    "main": "main.js",
-    "dependencies": {
-        "mdns": "^2.2.8"
-    }
+    "main": "main.js"
 }
