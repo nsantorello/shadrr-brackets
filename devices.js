@@ -37,6 +37,7 @@ define(function (require, exports, module) {
     });
     
     Devices._broadcastToDevice = function(client, file, code) {
+        // TODO: eventually pull these requests into a separate file "requests.js"
         try {
             var xmlHttp = new XMLHttpRequest();
             xmlHttp.open("POST", "http://" + client, true);
