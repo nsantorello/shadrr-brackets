@@ -13,7 +13,7 @@ define(function (require, exports, module) {
     
     function isShader(filename) {
         // Fragment shader extensions
-        var shaderExts = [".frag", ".glsl", ".glslf"];
+        var shaderExts = [".frag", ".glsl", ".glslf", ".fsh"];
         
         // Check if any extensions match the filename
         return _.any(shaderExts, function(ext) { 
