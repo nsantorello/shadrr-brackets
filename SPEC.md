@@ -11,6 +11,6 @@ Sets the list of files shown in the application
 * `code` - the shader code for the file
 
 #### Example
-`curl -v --data-urlencode "filename=shader1.glsl&code=..." http://url:port`
+`curl -v -d "filename=shader1.glsl&code=..." http://url:port`
 
 ---
