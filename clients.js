@@ -6,7 +6,7 @@ define(function (require, exports, module) {
         _ = require("vendor/lodash"),
         ClientTemplate = require("text!templates/client.html");
     
-    var ClientsExports = {},
+    var ModuleExports = {},
         clients = {},
         clientsDomNode = $(require("text!templates/client-group.html"));
     
@@ -62,7 +62,7 @@ define(function (require, exports, module) {
         xmlHttp.send("filename=" + file + "&code=" + code);
     }
     
-    ClientsExports.broadcast = function(file, code) {
+    ModuleExports.broadcast = function(file, code) {
         _.forEach(clients, function(c) { broadcastToClient(c.id, file, code); });
     }
     
@@ -82,5 +82,5 @@ define(function (require, exports, module) {
     
     Panel.domNode.append(clientsDomNode);
     
-    module.exports = ClientsExports;
+    module.exports = ModuleExports;
 });

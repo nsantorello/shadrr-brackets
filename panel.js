@@ -3,15 +3,17 @@ define(function (require, exports, module) {
     
     var WorkspaceManager = brackets.getModule("view/WorkspaceManager");
     
-    var PanelExports = {};
-    PanelExports.domNode = $(require("text!templates/panel.html"));
-    PanelExports.panel = WorkspaceManager.createBottomPanel("shadrr.panel", PanelExports.domNode);
+    var domNode = $(require("text!templates/panel.html"));
+    var ModuleExports = {
+        domNode: domNode,
+        panel: WorkspaceManager.createBottomPanel("shadrr.panel", domNode)
+    }
     
-    PanelExports.recomputeLayout = function() {
+    ModuleExports.recomputeLayout = function() {
         WorkspaceManager.recomputeLayout(false);
     }
     
-    PanelExports.panel.show();
+    ModuleExports.panel.show();
     
-    module.exports = PanelExports;
+    module.exports = ModuleExports;
 });

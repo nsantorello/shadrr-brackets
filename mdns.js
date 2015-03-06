@@ -5,17 +5,17 @@ define(function (require, exports, module) {
         NodeDomain     = brackets.getModule("utils/NodeDomain"),
         MdnsDomain = new NodeDomain("mdns", ExtensionUtils.getModulePath(module, "node/MdnsDomain"));
 
-    var MdnsExports = {},
+    var ModuleExports = {},
         upCbs = [],
         downCbs = [];
     
     // Add a callback for when a Shadrr client comes up
-    MdnsExports.shadrrUp = function(cb) {
+    ModuleExports.shadrrUp = function(cb) {
         upCbs.push(cb);
     };
     
     // Add a callback for when a Shadrr client goes down
-    MdnsExports.shadrrDown = function(cb) {
+    ModuleExports.shadrrDown = function(cb) {
         downCbs.push(cb);
     };
     
@@ -29,5 +29,5 @@ define(function (require, exports, module) {
     
     MdnsDomain.exec("start", false);
 
-    module.exports = MdnsExports;
+    module.exports = ModuleExports;
 });
