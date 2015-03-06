@@ -14,40 +14,41 @@ define(function (require, exports, module) {
         return data.host + ":" + data.port;   
     }
     
-    function addClient(id) {
-        // Track internally
-        var client = { id: id };
-        client.domNode = createDomNodeForClient(client);
-        clients[client.id] = client; 
-        
-        // Add to UI
-        addClientToDom(client);
-        
-        console.log("[Shadrr/devices.js] Added client:", client);  
+    function addClient(data) {
+        var id = getClientId(data);
+        if (!(id in clients)) {
+            // Track internally
+            var client = { id: id };
+            client.domNode = createDomNodeForClient(client);
+            clients[client.id] = client; 
+
+            // Add to UI
+            addClientToDom(client);
+
+            console.log("[Shadrr/devices.js] Added client:", client);  
+        }
     }
     
-    function removeClient(client) {
-        // Remove internally
-        delete clients[client.id];
-        
-        // Remove from UI
-        removeClientFromDom(client);
-        
-        console.log("[Shadrr/devices.js] Removed client:", client);
+    function removeClient(data) {
+        var id = getClientId(data);
+        if (id in clients) {
+            // Remove internally
+            var client = clients[id];
+            delete clients[id];
+
+            // Remove from UI
+            removeClientFromDom(client);
+
+            console.log("[Shadrr/devices.js] Removed client:", client);
+        }
     }
     
     Mdns.shadrrUp(function(data) {
-        var id = getClientId(data);
-        if (!(id in clients)) {
-            addClient(id);
-        }
+        addClient(data);
     });
     
     Mdns.shadrrDown(function(data) {
-        var id = getClientId(data);
-        if (id in clients) {
-            removeClient(clients[id]);
-        }
+        removeClient(data);
     });
     
     ModuleExports.broadcast = function(file, code) {
