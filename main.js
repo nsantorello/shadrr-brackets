@@ -3,6 +3,7 @@ define(function (require, exports, module) {
     
     var DocumentManager = brackets.getModule("document/DocumentManager"),
         MainViewManager = brackets.getModule("view/MainViewManager"), 
+        ExtensionUtils = brackets.getModule("utils/ExtensionUtils"),
         FileUtils = brackets.getModule("file/FileUtils"),
         _ = require("vendor/lodash"),
         Clients = require("clients");
@@ -39,4 +40,7 @@ define(function (require, exports, module) {
     // Hook into events that require broadcasting shader updates to clients
     DocumentManager.on("documentSaved", documentSaved);
     MainViewManager.on("currentFileChange", currentFileChange);
+    
+    // Load CSS
+    ExtensionUtils.loadStyleSheet(module, "shadrr.less");
 });

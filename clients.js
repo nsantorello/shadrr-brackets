@@ -16,7 +16,7 @@ define(function (require, exports, module) {
     
     function addClient(id) {
         // Track internally
-        var client = { id: id, isTransmitting: false };
+        var client = { id: id };
         client.domNode = createDomNodeForClient(client);
         clients[client.id] = client; 
         
@@ -50,20 +50,44 @@ define(function (require, exports, module) {
         }
     });
     
+    ModuleExports.broadcast = function(file, code) {
+        _.forEach(clients, function(c) { broadcastToClient(c, file, code); });
+    }
+    
     function broadcastToClient(client, file, code) {
         // TODO: eventually pull these requests into a separate file "requests.js"
+        // Set up request
         var xmlHttp = new XMLHttpRequest();
+        xmlHttp.timeout = 5000; // 5 second timeout -- over a local network, this should be more than enough
         xmlHttp.open("POST", "http://" + client.id, true);
         xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xmlHttp.onerror = function() { 
+        xmlHttp.onerror = xmlHttp.ontimeout = function() { 
             console.log("[Shadrr/devices.js] Removing stale client '" + client.id + "'");
             removeClient(client);
         };
+        xmlHttp.onreadystatechange = function() {
+            // These look like magic values, but they're not--I promise!
+            // http://www.w3schools.com/ajax/ajax_xmlhttprequest_onreadystatechange.asp
+            if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+                setIsTransmitting(client, false);
+            }
+        };
+        
+        // Set transmission active
+        setIsTransmitting(client, true);
+        
+        // Transmit data to client
         xmlHttp.send("filename=" + file + "&code=" + code);
     }
     
-    ModuleExports.broadcast = function(file, code) {
-        _.forEach(clients, function(c) { broadcastToClient(c.id, file, code); });
+    function setIsTransmitting(client, isTransmitting) {
+        var transmittingClass = "shadrr-transmitting";
+        var idNode = client.domNode.find(".shadrr-client-id");
+        if (isTransmitting) {
+            idNode.addClass(transmittingClass);
+        } else {
+            idNode.removeClass(transmittingClass);
+        }
     }
     
     function createDomNodeForClient(client) {
