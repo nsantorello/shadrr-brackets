@@ -2,13 +2,12 @@ define(function (require, exports, module) {
     "use strict";
     
     var Panel = require("panel"),
+        ClientsPanel = require("clients-panel"),
         Mdns = require("mdns"),
-        _ = require("vendor/lodash"),
-        ClientTemplate = require("text!templates/client.html");
+        _ = require("vendor/lodash");
     
     var ModuleExports = {},
-        clients = {},
-        clientsDomNode = $(require("text!templates/client-group.html"));
+        clients = {};
     
     function getClientId(data) {
         return data.host + ":" + data.port;   
@@ -18,11 +17,10 @@ define(function (require, exports, module) {
         if (!(id in clients)) {
             // Track internally
             var client = { id: id };
-            client.domNode = createDomNodeForClient(client);
             clients[client.id] = client; 
 
             // Add to UI
-            addClientToDom(client);
+            ClientsPanel.addClientToDom(client);
 
             console.log("[Shadrr/devices.js] Added client:", client);  
         }
@@ -35,7 +33,7 @@ define(function (require, exports, module) {
             delete clients[id];
 
             // Remove from UI
-            removeClientFromDom(client);
+            ClientsPanel.removeClientFromDom(client);
 
             console.log("[Shadrr/devices.js] Removed client:", client);
         }
@@ -68,41 +66,16 @@ define(function (require, exports, module) {
             // These look like magic values, but they're not--I promise!
             // http://www.w3schools.com/ajax/ajax_xmlhttprequest_onreadystatechange.asp
             if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-                setIsTransmitting(client, false);
+                ClientsPanel.setIsTransmitting(client, false);
             }
         };
         
         // Set transmission active
-        setIsTransmitting(client, true);
+        ClientsPanel.setIsTransmitting(client, true);
         
         // Transmit data to client
         xmlHttp.send("filename=" + file + "&code=" + code);
     }
-    
-    function setIsTransmitting(client, isTransmitting) {
-        var transmittingClass = "shadrr-transmitting";
-        if (isTransmitting) {
-            client.domNode.addClass(transmittingClass);
-        } else {
-            client.domNode.removeClass(transmittingClass);
-        }
-    }
-    
-    function createDomNodeForClient(client) {
-        return $(Mustache.render(ClientTemplate, client));
-    }
-    
-    function addClientToDom(client) {
-        clientsDomNode.append(client.domNode);
-        Panel.recomputeLayout();
-    }
-    
-    function removeClientFromDom(client) {
-        client.domNode.remove();
-        Panel.recomputeLayout();
-    }
-    
-    Panel.domNode.append(clientsDomNode);
     
     module.exports = ModuleExports;
 });
