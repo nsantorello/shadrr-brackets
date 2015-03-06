@@ -6,6 +6,7 @@ define(function (require, exports, module) {
         ExtensionUtils = brackets.getModule("utils/ExtensionUtils"),
         FileUtils = brackets.getModule("file/FileUtils"),
         _ = require("vendor/lodash"),
+        Panel = require("panel"),
         Clients = require("clients");
 
     function pushShader(filename, code) {
@@ -31,9 +32,12 @@ define(function (require, exports, module) {
     
     function currentFileChange(mgr, doc) {
         if (isShader(doc.name)) {
+            Panel.show();            
             FileUtils.readAsText(doc).done(function(text) {
                 pushShader(doc.name, text);
             });
+        } else {
+            Panel.hide();
         }
     }
     

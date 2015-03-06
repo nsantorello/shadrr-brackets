@@ -13,7 +13,17 @@ define(function (require, exports, module) {
         WorkspaceManager.recomputeLayout(false);
     }
     
-    ModuleExports.panel.show();
+    ModuleExports.hide = function() {
+        ModuleExports.panel.hide();
+    }
+    
+    ModuleExports.show = function() {
+        ModuleExports.panel.show();
+    }
+    
+    ModuleExports.recomputeLayout = function() {
+        WorkspaceManager.recomputeLayout(false);
+    }
     
     module.exports = ModuleExports;
 });

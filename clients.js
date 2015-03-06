@@ -61,7 +61,7 @@ define(function (require, exports, module) {
         xmlHttp.open("POST", "http://" + client.id, true);
         xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xmlHttp.onerror = xmlHttp.ontimeout = function() { 
-            console.log("[Shadrr/devices.js] Removing stale client '" + client.id + "'");
+            console.log("[Shadrr/devices.js] Client is stale:", client);
             removeClient(client.id);
         };
         xmlHttp.onreadystatechange = function() {
