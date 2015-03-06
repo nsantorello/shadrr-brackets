@@ -31,7 +31,7 @@ define(function (require, exports, module) {
     }
     
     function currentFileChange(mgr, doc) {
-        if (isShader(doc.name)) {
+        if (doc && isShader(doc.name)) {
             Panel.show();            
             FileUtils.readAsText(doc).done(function(text) {
                 pushShader(doc.name, text);

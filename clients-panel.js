@@ -27,8 +27,10 @@ define(function (require, exports, module) {
     }
     
     ModuleExports.removeClientFromDom = function(client) {
-        client.domNode.remove();
-        Panel.recomputeLayout();
+        if (client.domNode) {
+            client.domNode.remove();
+            Panel.recomputeLayout();
+        }
     }
     
     Panel.domNode.append(clientsDomNode);
