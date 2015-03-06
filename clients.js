@@ -14,8 +14,7 @@ define(function (require, exports, module) {
         return data.host + ":" + data.port;   
     }
     
-    function addClient(data) {
-        var id = getClientId(data);
+    function addClient(id) {
         if (!(id in clients)) {
             // Track internally
             var client = { id: id };
@@ -29,8 +28,7 @@ define(function (require, exports, module) {
         }
     }
     
-    function removeClient(data) {
-        var id = getClientId(data);
+    function removeClient(id) {
         if (id in clients) {
             // Remove internally
             var client = clients[id];
@@ -44,11 +42,11 @@ define(function (require, exports, module) {
     }
     
     Mdns.shadrrUp(function(data) {
-        addClient(data);
+        addClient(getClientId(data));
     });
     
     Mdns.shadrrDown(function(data) {
-        removeClient(data);
+        removeClient(getClientId(data));
     });
     
     ModuleExports.broadcast = function(file, code) {
@@ -64,7 +62,7 @@ define(function (require, exports, module) {
         xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xmlHttp.onerror = xmlHttp.ontimeout = function() { 
             console.log("[Shadrr/devices.js] Removing stale client '" + client.id + "'");
-            removeClient(client);
+            removeClient(client.id);
         };
         xmlHttp.onreadystatechange = function() {
             // These look like magic values, but they're not--I promise!
@@ -83,11 +81,10 @@ define(function (require, exports, module) {
     
     function setIsTransmitting(client, isTransmitting) {
         var transmittingClass = "shadrr-transmitting";
-        var idNode = client.domNode.find(".shadrr-client-id");
         if (isTransmitting) {
-            idNode.addClass(transmittingClass);
+            client.domNode.addClass(transmittingClass);
         } else {
-            idNode.removeClass(transmittingClass);
+            client.domNode.removeClass(transmittingClass);
         }
     }
     
