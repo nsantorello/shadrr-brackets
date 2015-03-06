@@ -5,14 +5,15 @@ define(function (require, exports, module) {
         MainViewManager = brackets.getModule("view/MainViewManager"), 
         FileUtils = brackets.getModule("file/FileUtils"),
         _ = require("vendor/lodash"),
-        Devices = require("devices");
+        Clients = require("clients");
 
     function pushShader(filename, code) {
-        Devices.broadcast(filename, code); 
+        Clients.broadcast(filename, code); 
     }
     
     function isShader(filename) {
         // Fragment shader extensions
+        // TODO: move this to preferences
         var shaderExts = [".frag", ".glsl", ".glslf", ".fsh"];
         
         // Check if any extensions match the filename
@@ -35,6 +36,7 @@ define(function (require, exports, module) {
         }
     }
     
+    // Hook into events that require broadcasting shader updates to clients
     DocumentManager.on("documentSaved", documentSaved);
     MainViewManager.on("currentFileChange", currentFileChange);
 });
