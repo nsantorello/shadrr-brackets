@@ -1,4 +1,4 @@
-// Unmodified from Shadertoy - https://www.shadertoy.com/view/XtsGRl
+// Minimally modified from Shadertoy - https://www.shadertoy.com/view/XtsGRl
 
 #define CHAR_SIZE vec2(3, 7)
 #define CHAR_SPACING vec2(4, 8)

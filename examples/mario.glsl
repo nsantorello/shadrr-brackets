@@ -1,4 +1,4 @@
-// Unmodified from Shadertoy - https://www.shadertoy.com/view/Msj3zD
+// Minimally modified from Shadertoy - https://www.shadertoy.com/view/Msj3zD
 
 // Super Mario Bros. by HLorenzi
 

@@ -1,4 +1,4 @@
-// Unmodified from Shadertoy - https://www.shadertoy.com/view/Xs2GDd
+// Minimally modified from Shadertoy - https://www.shadertoy.com/view/Xs2GDd
 
 #define PI 3.14159265359
 
