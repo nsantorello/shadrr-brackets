@@ -6,7 +6,7 @@ define(function (require, exports, module) {
     
     function createParamString(params) {
         return _.reduce(params, function(str, v, k) {
-            return str + (str == "" ? "" : "&") + k + "=" + v;
+            return str + (str == "" ? "" : "&") + k + "=" + encodeURIComponent(v);
         }, "");
     }
     
